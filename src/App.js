@@ -20,11 +20,23 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      // this.setState({ currentUser: user });
-      createUserProfileDocument(user); // 將使用者資料存進 firebase
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth); // 將使用者資料存進 firebase
 
-      console.log(user);
+        userRef.onSnapshot((snapShot) => {
+          // 取得使用者 snapshot，存進 app state
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data(),
+            },
+          });
+          console.log(this.state);
+        });
+      }
+
+      this.setState({ currentUser: userAuth });
     });
   }
 
