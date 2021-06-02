@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { toggleCartHidden } from '../../redux/cart/cart.actions';
 
 import { auth } from '../../firebase/firebase.utils';
 
@@ -10,7 +11,7 @@ import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
 import './header.styles.scss';
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, cartHidden, toggleCartHidden }) => {
   return (
     <div className='header'>
       <Link className='logo-container' to='/'>
@@ -32,9 +33,9 @@ const Header = ({ currentUser }) => {
             SIGN IN
           </NavLink>
         )}
-        <CartIcon />
+        <CartIcon toggleCartHidden={toggleCartHidden} />
       </div>
-      <CartDropdown />
+      {cartHidden ? null : <CartDropdown />}
     </div>
   );
 };
@@ -42,7 +43,14 @@ const Header = ({ currentUser }) => {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.user.currentUser,
+    cartHidden: state.cart.hidden,
   };
 };
 
-export default connect(mapStateToProps)(Header);
+const mapDitpatchToProps = (dispatch) => {
+  return {
+    toggleCartHidden: () => dispatch(toggleCartHidden()),
+  };
+};
+
+export default connect(mapStateToProps, mapDitpatchToProps)(Header);
