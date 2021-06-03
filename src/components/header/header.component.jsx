@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { toggleCartHidden } from '../../redux/cart/cart.actions';
 
 import { auth } from '../../firebase/firebase.utils';
 
@@ -33,7 +32,7 @@ const Header = ({ currentUser, cartHidden, toggleCartHidden }) => {
             SIGN IN
           </NavLink>
         )}
-        <CartIcon toggleCartHidden={toggleCartHidden} />
+        <CartIcon />
       </div>
       {cartHidden ? null : <CartDropdown />}
     </div>
@@ -47,10 +46,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDitpatchToProps = (dispatch) => {
-  return {
-    toggleCartHidden: () => dispatch(toggleCartHidden()),
-  };
-};
-
-export default connect(mapStateToProps, mapDitpatchToProps)(Header);
+export default connect(mapStateToProps)(Header);
