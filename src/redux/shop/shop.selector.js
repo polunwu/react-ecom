@@ -9,7 +9,7 @@ export const selectShopCollections = createSelector(
 
 export const selectCollectionsForPreview = createSelector(
   [selectShopCollections],
-  (collections) => (collections ? Object.values(collections) : {})
+  (collections) => (collections ? Object.values(collections) : [])
 );
 
 export const selectCollection = (collectionUrlParam) => {
@@ -17,3 +17,13 @@ export const selectCollection = (collectionUrlParam) => {
     shop.collections ? shop.collections[collectionUrlParam] : null
   );
 };
+
+export const selectIsCollectionFetching = createSelector(
+  [selectShop],
+  (shop) => shop.isFetching
+);
+
+export const selectIsCollectionsLoaded = createSelector(
+  [selectShop],
+  (shop) => !!shop.collections
+);
