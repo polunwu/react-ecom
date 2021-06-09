@@ -15,6 +15,7 @@ export const emailSignInStart = (emailAndPassword) => {
   };
 };
 
+// 登入成功
 export const signInSuccess = (user) => {
   return {
     type: UserActionTypes.SIGN_IN_SUCCESS,
@@ -22,6 +23,7 @@ export const signInSuccess = (user) => {
   };
 };
 
+// 登入失敗
 export const signInFialure = (error) => {
   return {
     type: UserActionTypes.SIGN_IN_FAILURE,
@@ -32,5 +34,24 @@ export const signInFialure = (error) => {
 export const checkUserSession = () => {
   return {
     type: UserActionTypes.CHECK_USER_SESSION,
+  };
+};
+
+export const signOutStart = () => {
+  return {
+    type: UserActionTypes.SIGN_OUT_START,
+  };
+};
+
+export const signOutSuccess = () => {
+  return {
+    type: UserActionTypes.SIGN_OUT_SUCCESS,
+  };
+};
+
+export const signOutFailure = (error) => {
+  return {
+    type: UserActionTypes.SIGN_OUT_FAILURE,
+    payload: error,
   };
 };

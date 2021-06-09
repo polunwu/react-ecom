@@ -8,7 +8,12 @@ import {
   getCurrentUser,
 } from '../../firebase/firebase.utils';
 
-import { signInSuccess, signInFialure } from './user.actions';
+import {
+  signInSuccess,
+  signInFialure,
+  signOutSuccess,
+  signOutFailure,
+} from './user.actions';
 
 // 取得 userSnapshot，並更新到 user reducer: currentUser
 export function* getSnapshotFromUserAuth(userAuth) {
@@ -62,6 +67,16 @@ export function* isUserAuthenticated() {
   }
 }
 
+// 執行登出
+export function* signOut() {
+  try {
+    yield auth.signOut();
+    yield put(signOutSuccess());
+  } catch (error) {
+    yield put(signOutFailure(error));
+  }
+}
+
 // 監聽 GOOGLE_SIGN_IN_START
 export function* onGoogleSignInStart() {
   yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
@@ -77,10 +92,16 @@ export function* onCheckUserSession() {
   yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
 }
 
+// 監聽
+export function* onSignOutStart() {
+  yield takeLatest(UserActionTypes.SIGN_OUT_START, signOut);
+}
+
 export function* userSagas() {
   yield all([
     call(onGoogleSignInStart),
     call(onEmailSignInStart),
     call(onCheckUserSession),
+    call(onSignOutStart),
   ]);
 }
