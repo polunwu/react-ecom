@@ -28,3 +28,9 @@ export const signInFialure = (error) => {
     payload: error,
   };
 };
+
+export const checkUserSession = () => {
+  return {
+    type: UserActionTypes.CHECK_USER_SESSION,
+  };
+};
